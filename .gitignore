@@ -67,7 +67,6 @@ supabase/.temp
 supabase/.tool-versions
 
 # Local-only docs (keep out of repo)
-README.md
 START_HERE.md
 FILE_STRUCTURE_PLAN.md
 MIGRATION_PLAN.md

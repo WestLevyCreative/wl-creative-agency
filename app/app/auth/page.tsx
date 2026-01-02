@@ -1,5 +1,10 @@
+import { Suspense } from "react";
 import { AuthScreen } from "@/components/auth/AuthScreen";
 
 export default function AuthPage() {
-  return <AuthScreen initialTab="partner" />;
+  return (
+    <Suspense fallback={null}>
+      <AuthScreen initialTab="partner" />
+    </Suspense>
+  );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ const inquiryTypes = [
   "Hire Us",
 ];
 
-export default function Contact() {
+function ContactContent() {
   const { toast } = useToast();
   const searchParams = useSearchParams();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -278,5 +278,13 @@ export default function Contact() {
         </div>
       </section>
     </>
+  );
+}
+
+export default function Contact() {
+  return (
+    <Suspense fallback={null}>
+      <ContactContent />
+    </Suspense>
   );
 }

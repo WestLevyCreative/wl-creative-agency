@@ -17,6 +17,9 @@ Marketing site built with Next.js 15 and React 19, styled with Tailwind CSS and 
 - Set the same Supabase env vars in Vercel (Production + Preview)
 - Import the GitHub repo into Vercel and deploy from the `app` project root
 - In Supabase auth settings, allow your Vercel domain(s) in the Site URL list
+- Local flow: from `app/`, run `npm run dev` and visit `http://localhost:3000` (hot reload).
+- Cloud flow: push to `main` on GitHub and Vercel will auto-build/deploy. You can also deploy manually with `vercel --prod` from `app/`.
+- If you add/change env vars, set them in Vercel (Production + Preview) before the next deploy.
 
 ## Notes
 - Local-only docs, setup scripts, and sample Supabase functions are ignored to keep the repo lean. Keep your `.env.local` out of Git.

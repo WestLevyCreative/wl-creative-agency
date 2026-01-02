@@ -1,0 +1,6 @@
+# Exclude local-only artifacts from Vercel uploads
+ISSOLATION/
+*.zip
+
+# Dependencies are installed by Vercel
+node_modules/

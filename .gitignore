@@ -108,3 +108,4 @@ supabase/config/kong.yml
 
 # Stray artifact
 app/public/'+f+'
+.vercel

@@ -1,0 +1,36 @@
+_format_version: '3.0'
+
+# Minimal Kong 3.x config for local development
+# This is a simplified config that allows Kong to start and act as a basic proxy
+
+services:
+  - name: app-service
+    url: http://app_dev:3000
+    routes:
+      - name: app-route
+        paths:
+          - /
+        strip_path: false
+        plugins:
+          - name: cors
+            config:
+              origins:
+                - '*'
+              credentials: true
+              methods:
+                - GET
+                - POST
+                - PUT
+                - PATCH
+                - DELETE
+                - OPTIONS
+                - HEAD
+              headers:
+                - Accept
+                - Accept-Version
+                - Content-Length
+                - Content-MD5
+                - Content-Type
+                - Date
+                - Authorization
+                - X-Client-Info

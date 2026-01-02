@@ -65,3 +65,47 @@ ISSOLATION/
 supabase/.branches
 supabase/.temp
 supabase/.tool-versions
+
+# Local-only docs (keep out of repo)
+README.md
+START_HERE.md
+FILE_STRUCTURE_PLAN.md
+MIGRATION_PLAN.md
+PRE-MIGRATION_PLAN.md
+NEXTJS_REBUILD_PLAN.md
+INDEX.md
+QUICK_START.md
+QUICK_SUPABASE_SETUP.md
+SUPABASE_INTEGRATION.md
+TEMPLATE_COMPLETE.md
+SETUP_INSTRUCTIONS.md
+SETUP_PIPELINE.md
+GIT_SETUP.md
+context.md
+context-claude-code-latest.md
+context/
+docs/
+
+# Local/dev tooling only
+Dockerfile
+Dockerfile.dev
+docker-compose.yml
+docker-compose-dev.yml
+docker-entrypoint.sh
+complete-workflow-setup.sh
+setup-new-project.sh
+setup-supabase.sh
+check-pipeline.sh
+
+# Sample Supabase functions/config
+functions/hello.ts
+supabase/functions/hello/
+supabase/functions/tsconfig.json
+supabase/functions/deno.json
+supabase/config/kong.yml
+
+# Local-only env/sample artifacts
+.env.example
+
+# Stray artifact
+app/public/'+f+'

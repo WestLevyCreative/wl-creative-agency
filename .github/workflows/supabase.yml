@@ -20,6 +20,9 @@ jobs:
       
       - name: Setup Supabase CLI
         uses: supabase/setup-cli@v1
+
+      - name: Show Supabase CLI version
+        run: supabase --version
       
       - name: Deploy Database Migrations
         env:

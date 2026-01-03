@@ -26,18 +26,18 @@ jobs:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
         run: |
-          supabase db push -p $SUPABASE_PROJECT_ID
+          supabase db push --project-id $SUPABASE_PROJECT_ID
       
       - name: Deploy Edge Functions
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
         run: |
-          supabase functions deploy -p $SUPABASE_PROJECT_ID
+          supabase functions deploy --project-id $SUPABASE_PROJECT_ID
       
       - name: Seed Database (if needed)
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_ID: ${{ secrets.SUPABASE_PROJECT_ID }}
         run: |
-          supabase db seed -p $SUPABASE_PROJECT_ID
+          supabase db seed --project-id $SUPABASE_PROJECT_ID

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -37,10 +38,13 @@ export function Header() {
       <nav className="container-custom flex items-center justify-between py-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <img
+          <Image
             src="/logos/logo-on-dark.png"
             alt="West Levy Creative"
+            width={180}
+            height={48}
             className="h-12 w-auto transition-opacity duration-300 group-hover:opacity-80"
+            priority
           />
         </Link>
 

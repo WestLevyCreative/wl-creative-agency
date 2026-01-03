@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SectionHeading } from "@/components/SectionHeading";
 import { teamMembers } from "@/data/team";
@@ -41,11 +42,14 @@ export default function WhoWeArePage() {
       <section className="section-padding container-custom">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <div className="relative">
-            <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-border shadow-2xl bg-muted">
-              <img
+            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-border shadow-2xl bg-muted">
+              <Image
                 src="/team/heather-wing.jpg"
                 alt="Heather Wing"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 480px, 90vw"
+                priority
               />
             </div>
             <div className="absolute -bottom-6 -right-6 w-52 h-52 bg-gradient-to-br from-primary/25 to-accent/25 rounded-2xl blur-3xl -z-10" />

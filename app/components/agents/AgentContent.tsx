@@ -3,6 +3,7 @@
  * Layout: Social sidebar (left) | Image (center) | Content (right)
  */
 
+import Image from 'next/image'
 import type { Agent } from '@/types/agent'
 import { Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -34,19 +35,22 @@ export function AgentContent({ agent }: AgentContentProps) {
             </div>
           </div>
 
-          {/* Center - Image */}
-          <div className="col-span-5">
-            <div className="relative rounded-lg overflow-hidden shadow-2xl h-full bg-gradient-to-br from-gray-800 to-gray-900">
-              {agent.headshotUrl ? (
-                <img
-                  src={agent.headshotUrl}
-                  alt={`${agent.firstName} ${agent.lastName}`}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full min-h-[500px] flex items-center justify-center">
-                  <div className="text-center text-gray-500">
-                    <p className="text-sm uppercase tracking-widest">Profile Photo</p>
+        {/* Center - Image */}
+        <div className="col-span-5">
+          <div className="relative rounded-lg overflow-hidden shadow-2xl h-full bg-gradient-to-br from-gray-800 to-gray-900">
+            {agent.headshotUrl ? (
+              <Image
+                src={agent.headshotUrl}
+                alt={`${agent.firstName} ${agent.lastName}`}
+                fill
+                className="object-cover"
+                sizes="(min-width: 1280px) 480px, 90vw"
+                priority
+              />
+            ) : (
+              <div className="w-full h-full min-h-[500px] flex items-center justify-center">
+                <div className="text-center text-gray-500">
+                  <p className="text-sm uppercase tracking-widest">Profile Photo</p>
                     <p className="text-xs mt-2">Coming Soon</p>
                   </div>
                 </div>

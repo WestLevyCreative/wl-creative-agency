@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -157,13 +158,16 @@ export function MegaMenu() {
         <div className="flex items-center justify-between py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group relative z-50">
-            <img
+            <Image
               src="/logos/logo-on-dark.png"
               alt="West Levy Creative"
+              width={180}
+              height={48}
               className={cn(
-                "transition-all duration-300",
+                "transition-all duration-300 h-auto w-auto",
                 scrolled ? "h-10" : "h-12"
               )}
+              priority
             />
           </Link>
 

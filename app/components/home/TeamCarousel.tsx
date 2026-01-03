@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Link from "next/link";
@@ -124,10 +125,12 @@ export function TeamCarousel({ agents, loading, error }: Props) {
                 >
                   <div className="relative aspect-[3/4] overflow-hidden rounded-xl mb-4 card-interactive border border-border">
                     {image ? (
-                      <img
+                      <Image
                         src={image}
                         alt={`${agent.first_name} ${agent.last_name}`}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(min-width: 1024px) 340px, 80vw"
                       />
                     ) : (
                       <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">

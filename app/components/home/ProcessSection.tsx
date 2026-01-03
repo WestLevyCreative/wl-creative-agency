@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 
 export function ProcessSection() {
@@ -8,18 +9,22 @@ export function ProcessSection() {
           {/* Images Grid */}
           <div className="relative">
             <div className="grid grid-cols-2 gap-4">
-              <div className="aspect-[3/4] overflow-hidden rounded-lg">
-                <img
+              <div className="relative aspect-[3/4] overflow-hidden rounded-lg">
+                <Image
                   src="https://westlevy.com/wp-content/uploads/2025/12/AdobeStock_1678473046-scaled.jpeg"
                   alt="Creative process"
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-500"
+                  sizes="(min-width: 1024px) 260px, 50vw"
                 />
               </div>
-              <div className="aspect-[3/4] overflow-hidden rounded-lg mt-8">
-                <img
+              <div className="relative aspect-[3/4] overflow-hidden rounded-lg mt-8">
+                <Image
                   src="https://westlevy.com/wp-content/uploads/2025/12/AdobeStock_1695495273-1-scaled.jpeg"
                   alt="Brand strategy session"
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-500"
+                  sizes="(min-width: 1024px) 260px, 50vw"
                 />
               </div>
             </div>

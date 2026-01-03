@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { fadeInScale } from "./animations";
 import {
@@ -61,11 +62,13 @@ function MegaMenuCaseStudy({
       </h4>
 
       {image && (
-        <div className="w-full h-24 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 overflow-hidden">
-          <img
+        <div className="relative w-full h-24 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 overflow-hidden">
+          <Image
             src={image}
             alt={title}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
+            sizes="(min-width: 1024px) 360px, 90vw"
           />
         </div>
       )}

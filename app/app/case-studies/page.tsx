@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SectionHeading } from "@/components/SectionHeading";
 import { caseStudies, categories } from "@/data/caseStudies";
@@ -35,12 +36,15 @@ export default function CaseStudiesPage() {
               key={study.id}
               className="rounded-xl overflow-hidden border border-border bg-card/50 hover:border-primary/60 transition-colors flex flex-col"
             >
-              <div className="aspect-[16/10] bg-muted">
+              <div className="relative aspect-[16/10] bg-muted overflow-hidden">
                 {study.image && (
-                  <img
+                  <Image
                     src={study.image}
                     alt={`${study.title} ${study.titleAccent}`}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(min-width: 1024px) 420px, 100vw"
+                    priority={false}
                   />
                 )}
               </div>

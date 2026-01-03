@@ -2,6 +2,7 @@
  * AgentHero Component - Large banner with overlaid text
  */
 
+import Image from 'next/image'
 import type { Agent } from '@/types/agent'
 
 interface AgentHeroProps {
@@ -14,11 +15,16 @@ export function AgentHero({ agent }: AgentHeroProps) {
       {/* Background banner image */}
       {agent.accentImageUrl && (
         <div className="absolute inset-0 z-0">
-          <img
-            src={agent.accentImageUrl}
-            alt=""
-            className="w-full h-full object-cover"
-          />
+          <div className="relative h-full w-full">
+            <Image
+              src={agent.accentImageUrl}
+              alt=""
+              fill
+              className="object-cover"
+              sizes="100vw"
+              priority
+            />
+          </div>
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
         </div>

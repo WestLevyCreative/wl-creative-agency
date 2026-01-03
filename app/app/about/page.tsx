@@ -1,5 +1,6 @@
 import { SectionHeading } from "@/components/SectionHeading";
 import { ArrowRight, Phone } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 const pillars = [
@@ -69,11 +70,14 @@ export default function AboutPage() {
 
           <div className="order-1 lg:order-2">
             <div className="relative">
-              <div className="aspect-[4/5] rounded-2xl border border-border overflow-hidden shadow-2xl bg-muted">
-                <img
+              <div className="relative aspect-[4/5] rounded-2xl border border-border overflow-hidden shadow-2xl bg-muted">
+                <Image
                   src="/team/heather-wing.jpg"
                   alt="Heather Wing"
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 420px, 90vw"
+                  priority
                 />
               </div>
               <div className="absolute -bottom-6 -right-6 w-64 h-64 bg-gradient-to-br from-primary/25 to-accent/25 rounded-2xl blur-3xl -z-10" />

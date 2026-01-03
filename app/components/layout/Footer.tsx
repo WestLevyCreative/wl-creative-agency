@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
 
@@ -35,18 +36,20 @@ export function Footer() {
       <div className="container-custom section-padding">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-          {/* Brand Column */}
-          <div className="lg:col-span-1">
-            <Link href="/" className="inline-block mb-6">
-              <img
-                src="/logos/logo-on-dark.png"
-                alt="West Levy Creative"
-                className="h-12 w-auto transition-opacity duration-300 hover:opacity-80"
-              />
-            </Link>
-            <p className="text-sm text-muted-foreground mb-6 max-w-xs">
-              We build visibility engines for brands who move culture forward.
-            </p>
+        {/* Brand Column */}
+        <div className="lg:col-span-1">
+          <Link href="/" className="inline-block mb-6">
+            <Image
+              src="/logos/logo-on-dark.png"
+              alt="West Levy Creative"
+              width={180}
+              height={48}
+              className="h-12 w-auto transition-opacity duration-300 hover:opacity-80"
+            />
+          </Link>
+          <p className="text-sm text-muted-foreground mb-6 max-w-xs">
+            We build visibility engines for brands who move culture forward.
+          </p>
             
             {/* Contact Info */}
             <div className="space-y-3">

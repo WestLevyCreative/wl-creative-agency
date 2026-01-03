@@ -3,6 +3,7 @@
  * Image on RIGHT (40%), copy on LEFT (60%)
  */
 
+import Image from 'next/image'
 import type { Agent } from '@/types/agent'
 
 interface AgentAchievementsProps {
@@ -34,10 +35,13 @@ export function AgentAchievements({ agent, achievementImageUrl }: AgentAchieveme
           <div className="md:col-span-2">
             <div className="relative rounded-lg overflow-hidden shadow-2xl bg-gradient-to-br from-gray-100 to-gray-200">
               {achievementImageUrl ? (
-                <img
+                <Image
                   src={achievementImageUrl}
                   alt={`${agent.firstName} ${agent.lastName}`}
+                  width={800}
+                  height={1000}
                   className="w-full h-auto object-cover"
+                  sizes="(min-width: 1024px) 480px, 90vw"
                 />
               ) : (
                 <div className="w-full aspect-[4/5] flex items-center justify-center">

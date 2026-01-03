@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/SectionHeading";
@@ -79,10 +80,13 @@ export function AboutSection() {
           {/* Image */}
           <div className="order-1 lg:order-2 relative">
             <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
-              <img
+              <Image
                 src="https://westlevy.com/wp-content/uploads/2025/12/HeatherProfilePhoto-Italy-Office3-5-with-makeup.jpg"
                 alt="Heather Wing, Co-Founder of West Levy Creative"
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                sizes="(min-width: 1024px) 480px, 90vw"
+                priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
             </div>

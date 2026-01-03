@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { columnVariants, glowPulseEffect, gradientAnimation, featuredIconEffect } from "./animations";
@@ -88,11 +89,13 @@ export function MegaMenuFeaturedCard({ content }: MegaMenuFeaturedCardProps) {
         )}
 
         {content.image && (
-          <div className="w-full h-32 mb-6 rounded-xl overflow-hidden">
-            <img
+          <div className="relative w-full h-32 mb-6 rounded-xl overflow-hidden">
+            <Image
               src={content.image}
               alt={content.title}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              sizes="(min-width: 1024px) 360px, 90vw"
             />
           </div>
         )}

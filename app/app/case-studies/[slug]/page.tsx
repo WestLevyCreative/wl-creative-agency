@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getCaseStudy } from "@/data/caseStudies";
@@ -50,9 +51,16 @@ export default function CaseStudyDetailPage({ params }: Props) {
             </div>
           </div>
           <div className="space-y-6">
-            <div className="aspect-[4/3] rounded-2xl overflow-hidden border border-border bg-muted">
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border border-border bg-muted">
               {study.image && (
-                <img src={study.image} alt={`${study.title} ${study.titleAccent}`} className="w-full h-full object-cover" />
+                <Image
+                  src={study.image}
+                  alt={`${study.title} ${study.titleAccent}`}
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 720px, 100vw"
+                  priority
+                />
               )}
             </div>
             {study.results && study.results.length > 0 && (

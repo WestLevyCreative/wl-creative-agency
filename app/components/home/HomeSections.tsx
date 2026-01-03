@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { homeCopy } from "@/data/home";
@@ -144,10 +145,14 @@ export function HomeSections() {
               isPhilosophyVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-10'
             }`}>
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img
+                <Image
                   src="/images/philosophy-wlca.jpg"
                   alt="Collaborative network and connection"
+                  width={1600}
+                  height={1000}
                   className="w-full h-auto object-cover"
+                  sizes="(min-width: 1024px) 60vw, 100vw"
+                  priority
                 />
                 {/* Subtle overlay gradient */}
                 <div className="absolute inset-0 bg-gradient-to-tr from-[#4EC4BE]/10 to-transparent" />

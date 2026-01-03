@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getAgentProfile, agentProfiles } from "@/data/agentProfiles";
@@ -82,12 +83,25 @@ export default function AgentProfilePage({ params }: Props) {
               </div>
             </div>
             <div className="relative">
-              <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-white/15 bg-muted shadow-2xl">
-                <img src={agent.heroImage} alt={agent.name} className="w-full h-full object-cover" />
+              <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-white/15 bg-muted shadow-2xl">
+                <Image
+                  src={agent.heroImage}
+                  alt={agent.name}
+                  fill
+                  className="object-cover"
+                  sizes="(min-width: 1024px) 560px, 90vw"
+                  priority
+                />
               </div>
               {agent.headshot && (
-                <div className="absolute -bottom-6 -right-6 w-36 h-36 rounded-2xl overflow-hidden border-4 border-background shadow-xl">
-                  <img src={agent.headshot} alt={`${agent.name} headshot`} className="w-full h-full object-cover" />
+                <div className="absolute -bottom-6 -right-6 w-36 h-36 rounded-2xl overflow-hidden border-4 border-background shadow-xl relative">
+                  <Image
+                    src={agent.headshot}
+                    alt={`${agent.name} headshot`}
+                    fill
+                    className="object-cover"
+                    sizes="144px"
+                  />
                 </div>
               )}
             </div>
@@ -226,12 +240,14 @@ export default function AgentProfilePage({ params }: Props) {
                   className="rounded-2xl border border-white/10 bg-white/5 p-5 hover:-translate-y-1 transition"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full overflow-hidden border border-white/10 bg-muted">
+                    <div className="relative w-12 h-12 rounded-full overflow-hidden border border-white/10 bg-muted">
                       {rel!.headshot || rel!.heroImage ? (
-                        <img
+                        <Image
                           src={rel!.headshot || rel!.heroImage}
                           alt={rel!.name}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
+                          sizes="48px"
                         />
                       ) : null}
                     </div>

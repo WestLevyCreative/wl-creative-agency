@@ -1,158 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Menu, X, ArrowRight, Sparkles, Rocket, Users, Briefcase, Star, Gift, LifeBuoy, Mail, Home as HomeIcon, User } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
-
-// HOME - Anchor links to homepage sections
-const homeLinks = [
-  {
-    icon: Sparkles,
-    title: "Our Philosophy",
-    description: "Connection is the catalyst",
-    href: "/#philosophy",
-    color: "from-primary to-accent"
-  },
-  {
-    icon: Star,
-    title: "Signature Partnerships",
-    description: "Dynamic visibility programs",
-    href: "/#partnerships",
-    color: "from-secondary to-primary"
-  },
-  {
-    icon: Rocket,
-    title: "The West Levy Standard",
-    description: "Precision, authenticity, momentum",
-    href: "/#standard",
-    color: "from-accent to-secondary"
-  },
-  {
-    icon: Users,
-    title: "Global Creative Culture",
-    description: "Worldwide network of storytellers",
-    href: "/#global-culture",
-    color: "from-primary to-secondary"
-  }
-];
-
-// WE - About us
-const weLinks = [
-  {
-    icon: Users,
-    title: "Who We Are",
-    description: "Meet the minds behind the magic",
-    href: "/who-we-are",
-    color: "from-primary to-accent"
-  },
-  {
-    icon: Sparkles,
-    title: "About",
-    description: "How we build visibility engines",
-    href: "/about",
-    color: "from-secondary to-primary"
-  },
-  {
-    icon: Briefcase,
-    title: "Careers",
-    description: "Join our creative revolution",
-    href: "/careers",
-    color: "from-accent to-secondary"
-  }
-];
-
-// CREATE - Services
-const createLinks = [
-  {
-    icon: Sparkles,
-    title: "All Services",
-    description: "Explore our full creative arsenal",
-    href: "/services",
-    color: "from-primary to-accent"
-  },
-  {
-    icon: Rocket,
-    title: "Brand Strategy",
-    description: "Build a foundation that resonates",
-    href: "/services#strategy",
-    color: "from-secondary to-primary"
-  },
-  {
-    icon: Star,
-    title: "Digital Marketing",
-    description: "Amplify your message everywhere",
-    href: "/services#marketing",
-    color: "from-accent to-secondary"
-  },
-  {
-    icon: Sparkles,
-    title: "Creative Production",
-    description: "Content that captivates and converts",
-    href: "/services#production",
-    color: "from-primary to-secondary"
-  }
-];
-
-// IMPACT - Case studies and results
-const impactLinks = [
-  {
-    icon: Star,
-    title: "Case Studies",
-    description: "See our work in action",
-    href: "/case-studies",
-    color: "from-primary to-accent"
-  },
-  {
-    icon: Briefcase,
-    title: "Portfolio",
-    description: "Selected work across industries",
-    href: "/portfolio",
-    color: "from-secondary to-primary"
-  },
-  {
-    icon: Users,
-    title: "Client Success",
-    description: "Stories of transformation",
-    href: "/case-studies",
-    color: "from-secondary to-primary"
-  }
-];
-
-// TOGETHER - Contact and engagement
-const togetherLinks = [
-  {
-    icon: Mail,
-    title: "Get In Touch",
-    description: "Start the conversation",
-    href: "/contact",
-    color: "from-primary to-accent"
-  },
-  {
-    icon: Users,
-    title: "Our Locations",
-    description: "Global presence, local impact",
-    href: "/contact#locations",
-    color: "from-secondary to-primary"
-  },
-  {
-    icon: Gift,
-    title: "Rewards Program",
-    description: "Refer and earn exclusive perks",
-    href: "/rewards",
-    color: "from-accent to-secondary"
-  },
-  {
-    icon: LifeBuoy,
-    title: "Support",
-    description: "We're here to help you succeed",
-    href: "/support",
-    color: "from-primary to-secondary"
-  }
-];
+import { megaMenuSections } from "./mega-menu/config";
+import { dropdownVariants, columnVariants } from "./mega-menu/animations";
+import { MegaMenuFeaturedCard } from "./mega-menu/MegaMenuFeaturedCard";
+import { MegaMenuLink } from "./mega-menu/MegaMenuLink";
+import { MegaMenuPromoCard } from "./mega-menu/MegaMenuPromoCard";
 
 export function MegaMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -161,6 +21,9 @@ export function MegaMenu() {
   const pathname = usePathname();
   const router = useRouter();
   const { isAuthenticated } = useAuth();
+  const closeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const enterTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hoverStableRef = useRef<string | null>(null);
 
   // Helper function to handle section scrolling
   const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
@@ -188,6 +51,40 @@ export function MegaMenu() {
     }
   };
 
+  // Helper functions to handle delayed menu closing (fixes hover gap glitch)
+  const handleMenuEnter = (sectionId: string) => {
+    // Clear any pending close timeout
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+
+    // Clear any pending enter timeout
+    if (enterTimeoutRef.current) {
+      clearTimeout(enterTimeoutRef.current);
+    }
+
+    // Debounce menu open by 50ms to prevent flicker
+    enterTimeoutRef.current = setTimeout(() => {
+      setActiveMenu(sectionId);
+      hoverStableRef.current = sectionId;
+    }, 50);
+  };
+
+  const handleMenuLeave = () => {
+    // Clear any pending enter timeout
+    if (enterTimeoutRef.current) {
+      clearTimeout(enterTimeoutRef.current);
+      enterTimeoutRef.current = null;
+    }
+
+    // Delay closing by 250ms to prevent flicker when moving cursor to dropdown
+    closeTimeoutRef.current = setTimeout(() => {
+      setActiveMenu(null);
+      hoverStableRef.current = null;
+    }, 250);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
@@ -200,6 +97,11 @@ export function MegaMenu() {
   useEffect(() => {
     setIsOpen(false);
     setActiveMenu(null);
+    // Clear any pending close timeout when navigating
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
   }, [pathname]);
 
   // Lock body scroll when mobile menu is open
@@ -214,6 +116,31 @@ export function MegaMenu() {
       document.body.style.overflow = '';
     };
   }, [isOpen]);
+
+  // Lock body scroll when desktop mega menu is open
+  useEffect(() => {
+    if (activeMenu) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [activeMenu]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (closeTimeoutRef.current) {
+        clearTimeout(closeTimeoutRef.current);
+      }
+      if (enterTimeoutRef.current) {
+        clearTimeout(enterTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const isActive = (href: string) => pathname === href;
 
@@ -240,319 +167,105 @@ export function MegaMenu() {
             />
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
-            {/* HOME Mega Menu */}
-            <div
-              className="relative"
-              onMouseEnter={() => setActiveMenu("home")}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <Link
-                href="/"
-                className={cn(
-                  "px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg relative group inline-block",
-                  activeMenu === "home" || isActive("/")
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
+          {/* Desktop Navigation - New 2026 Three-Column Mega Menu */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {megaMenuSections.map((section) => (
+              <div
+                key={section.id}
+                className="relative"
+                onMouseEnter={() => handleMenuEnter(section.id)}
+                onMouseLeave={handleMenuLeave}
               >
-                Home
-                <span className={cn(
-                  "absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300",
-                  activeMenu === "home" || isActive("/") ? "w-full" : "w-0 group-hover:w-full"
-                )} />
-              </Link>
+                {/* Trigger Button */}
+                <button
+                  className={cn(
+                    "px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg relative group",
+                    activeMenu === section.id
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  {section.trigger}
+                  <span
+                    className={cn(
+                      "absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300 pointer-events-none",
+                      activeMenu === section.id ? "w-full" : "w-0 group-hover:w-full"
+                    )}
+                  />
+                </button>
 
-              {/* HOME Dropdown */}
-              {activeMenu === "home" && (
-                <div className="absolute top-full left-0 pt-2 w-[600px] animate-fade-in">
-                  <div className="bg-card/95 backdrop-blur-xl border border-border rounded-2xl shadow-2xl overflow-hidden">
-                    <div className="p-8">
-                      <div className="grid grid-cols-2 gap-4">
-                        {homeLinks.map((link, index) => {
-                          const Icon = link.icon;
-                          const sectionId = link.href.replace('/#', '');
-                          return (
-                            <a
-                              key={index}
-                              href={link.href}
-                              onClick={(e) => handleSectionClick(e, sectionId)}
-                              className="group p-4 rounded-xl border border-border/50 hover:border-primary/50 bg-card/50 hover:bg-gradient-to-br hover:from-primary/5 hover:to-accent/5 transition-all duration-300 cursor-pointer"
-                            >
-                              <div className="flex items-center gap-3">
-                                <div className={cn(
-                                  "w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform",
-                                  link.color
-                                )}>
-                                  <Icon className="w-5 h-5 text-background" />
-                                </div>
-                                <div className="flex-1">
-                                  <h3 className="font-heading text-sm font-semibold mb-0.5 group-hover:text-primary transition-colors">
-                                    {link.title}
-                                  </h3>
-                                  <p className="text-xs text-muted-foreground">
-                                    {link.description}
-                                  </p>
+                {/* Three-Column Dropdown */}
+                <AnimatePresence mode="wait">
+                  {activeMenu === section.id && (
+                    <motion.div
+                      key={`${section.id}-${hoverStableRef.current}`}
+                      className="fixed top-[73px] -mt-2 pt-2 z-50"
+                      style={{
+                        left: "50%",
+                        x: "-50%",
+                        width: `min(${section.width}px, 90vw)`,
+                        maxWidth: "90vw"
+                      }}
+                      variants={dropdownVariants}
+                      initial="hidden"
+                      animate="visible"
+                      exit="exit"
+                      onMouseEnter={() => handleMenuEnter(section.id)}
+                      onMouseLeave={handleMenuLeave}
+                    >
+                      {/* Glass Container */}
+                      <div
+                        className="mega-menu-glass rounded-2xl shadow-2xl overflow-hidden"
+                        onClick={(e) => {
+                          // Close menu when any link is clicked for fly-off effect
+                          if ((e.target as HTMLElement).closest('a')) {
+                            setActiveMenu(null);
+                          }
+                        }}
+                      >
+                        {/* Three-Column Grid */}
+                        <div className="relative z-10 p-8 grid grid-cols-[2fr_1.75fr_1.25fr] gap-8">
+                          {/* Left Column - Featured */}
+                          <MegaMenuFeaturedCard content={section.featured} />
+
+                          {/* Middle Column - Links */}
+                          <motion.div
+                            className="space-y-6 max-h-[calc(100vh-200px)] overflow-y-auto pr-2 mega-menu-scroll"
+                            variants={columnVariants}
+                            custom={1}
+                          >
+                            {section.links.map((group, groupIndex) => (
+                              <div key={groupIndex}>
+                                {group.heading && (
+                                  <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-wider mb-3">
+                                    {group.heading}
+                                  </h4>
+                                )}
+                                <div className="space-y-3">
+                                  {group.links.map((link, linkIndex) => (
+                                    <MegaMenuLink
+                                      key={linkIndex}
+                                      link={link}
+                                      index={linkIndex}
+                                    />
+                                  ))}
                                 </div>
                               </div>
-                            </a>
-                          );
-                        })}
+                            ))}
+                          </motion.div>
+
+                          {/* Right Column - Promo */}
+                          <motion.div variants={columnVariants} custom={2}>
+                            <MegaMenuPromoCard {...section.promo} />
+                          </motion.div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* WE Mega Menu */}
-            <div
-              className="relative"
-              onMouseEnter={() => setActiveMenu("we")}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <button
-                className={cn(
-                  "px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg relative group",
-                  activeMenu === "we" || isActive("/who-we-are")
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                We
-                <span className={cn(
-                  "absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-accent transition-all duration-300",
-                  activeMenu === "we" || isActive("/who-we-are") ? "w-full" : "w-0 group-hover:w-full"
-                )} />
-              </button>
-
-              {/* WE Dropdown */}
-              {activeMenu === "we" && (
-                <div className="absolute top-full left-0 pt-2 w-[600px] animate-fade-in">
-                  <div className="bg-card/95 backdrop-blur-xl border border-border rounded-2xl shadow-2xl overflow-hidden">
-                    <div className="p-8">
-                      <div className="grid grid-cols-1 gap-4">
-                        {weLinks.map((link, index) => {
-                          const Icon = link.icon;
-                          return (
-                            <Link
-                              key={index}
-                              href={link.href}
-                              className="group p-4 rounded-xl border border-border/50 hover:border-primary/50 bg-card/50 hover:bg-gradient-to-br hover:from-primary/5 hover:to-accent/5 transition-all duration-300"
-                            >
-                              <div className="flex items-start gap-4">
-                                <div className={cn(
-                                  "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform",
-                                  link.color
-                                )}>
-                                  <Icon className="w-6 h-6 text-background" />
-                                </div>
-                                <div className="flex-1">
-                                  <h3 className="font-heading font-semibold mb-1 group-hover:text-primary transition-colors">
-                                    {link.title}
-                                  </h3>
-                                  <p className="text-sm text-muted-foreground">
-                                    {link.description}
-                                  </p>
-                                </div>
-                                <ArrowRight className="w-5 h-5 text-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* CREATE Mega Menu */}
-            <div
-              className="relative"
-              onMouseEnter={() => setActiveMenu("create")}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <button
-                className={cn(
-                  "px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg relative group",
-                  activeMenu === "create" || isActive("/services")
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                Create
-                <span className={cn(
-                  "absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-secondary to-accent transition-all duration-300",
-                  activeMenu === "create" || isActive("/services") ? "w-full" : "w-0 group-hover:w-full"
-                )} />
-              </button>
-
-              {/* CREATE Dropdown */}
-              {activeMenu === "create" && (
-                <div className="absolute top-full left-0 pt-2 w-[600px] animate-fade-in">
-                  <div className="bg-card/95 backdrop-blur-xl border border-border rounded-2xl shadow-2xl overflow-hidden">
-                    <div className="p-8">
-                      <div className="grid grid-cols-1 gap-4">
-                        {createLinks.map((link, index) => {
-                          const Icon = link.icon;
-                          return (
-                            <Link
-                              key={index}
-                              href={link.href}
-                              className="group p-4 rounded-xl border border-border/50 hover:border-secondary/50 bg-card/50 hover:bg-gradient-to-br hover:from-secondary/5 hover:to-accent/5 transition-all duration-300"
-                            >
-                              <div className="flex items-start gap-4">
-                                <div className={cn(
-                                  "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform",
-                                  link.color
-                                )}>
-                                  <Icon className="w-6 h-6 text-background" />
-                                </div>
-                                <div className="flex-1">
-                                  <h3 className="font-heading font-semibold mb-1 group-hover:text-secondary transition-colors">
-                                    {link.title}
-                                  </h3>
-                                  <p className="text-sm text-muted-foreground">
-                                    {link.description}
-                                  </p>
-                                </div>
-                                <ArrowRight className="w-5 h-5 text-secondary opacity-0 group-hover:opacity-100 transition-opacity" />
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* IMPACT Mega Menu */}
-            <div
-              className="relative"
-              onMouseEnter={() => setActiveMenu("impact")}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <button
-                className={cn(
-                  "px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg relative group",
-                  activeMenu === "impact" || isActive("/case-studies")
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                Impact
-                <span className={cn(
-                  "absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-accent to-secondary transition-all duration-300",
-                  activeMenu === "impact" || isActive("/case-studies") ? "w-full" : "w-0 group-hover:w-full"
-                )} />
-              </button>
-
-              {/* IMPACT Dropdown */}
-              {activeMenu === "impact" && (
-                <div className="absolute top-full left-0 pt-2 w-[500px] animate-fade-in">
-                  <div className="bg-card/95 backdrop-blur-xl border border-border rounded-2xl shadow-2xl overflow-hidden">
-                    <div className="p-6">
-                      <div className="grid grid-cols-1 gap-4">
-                        {impactLinks.map((link, index) => {
-                          const Icon = link.icon;
-                          return (
-                            <Link
-                              key={index}
-                              href={link.href}
-                              className="group p-4 rounded-xl border border-border/50 hover:border-accent/50 bg-card/50 hover:bg-gradient-to-br hover:from-accent/5 hover:to-secondary/5 transition-all duration-300"
-                            >
-                              <div className="flex items-start gap-4">
-                                <div className={cn(
-                                  "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform",
-                                  link.color
-                                )}>
-                                  <Icon className="w-6 h-6 text-background" />
-                                </div>
-                                <div className="flex-1">
-                                  <h3 className="font-heading font-semibold mb-1 group-hover:text-accent transition-colors">
-                                    {link.title}
-                                  </h3>
-                                  <p className="text-sm text-muted-foreground">
-                                    {link.description}
-                                  </p>
-                                </div>
-                                <ArrowRight className="w-5 h-5 text-accent opacity-0 group-hover:opacity-100 transition-opacity" />
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* TOGETHER Mega Menu */}
-            <div
-              className="relative"
-              onMouseEnter={() => setActiveMenu("together")}
-              onMouseLeave={() => setActiveMenu(null)}
-            >
-              <button
-                className={cn(
-                  "px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg relative group",
-                  activeMenu === "together" || isActive("/contact")
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                Together
-                <span className={cn(
-                  "absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-secondary transition-all duration-300",
-                  activeMenu === "together" || isActive("/contact") ? "w-full" : "w-0 group-hover:w-full"
-                )} />
-              </button>
-
-              {/* TOGETHER Dropdown */}
-              {activeMenu === "together" && (
-                <div className="absolute top-full left-0 pt-2 w-[600px] animate-fade-in">
-                  <div className="bg-card/95 backdrop-blur-xl border border-border rounded-2xl shadow-2xl overflow-hidden">
-                    <div className="p-8">
-                      <div className="grid grid-cols-2 gap-4">
-                        {togetherLinks.map((link, index) => {
-                          const Icon = link.icon;
-                          return (
-                            <Link
-                              key={index}
-                              href={link.href}
-                              className="group p-4 rounded-xl border border-border/50 hover:border-primary/50 bg-card/50 hover:bg-gradient-to-br hover:from-primary/5 hover:to-secondary/5 transition-all duration-300"
-                            >
-                              <div className="flex items-center gap-3">
-                                <div className={cn(
-                                  "w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform",
-                                  link.color
-                                )}>
-                                  <Icon className="w-5 h-5 text-background" />
-                                </div>
-                                <div className="flex-1">
-                                  <h3 className="font-heading text-sm font-semibold mb-0.5 group-hover:text-primary transition-colors">
-                                    {link.title}
-                                  </h3>
-                                  <p className="text-xs text-muted-foreground">
-                                    {link.description}
-                                  </p>
-                                </div>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ))}
+          </nav>
 
           {/* CTA Buttons */}
           <div className="hidden lg:flex items-center gap-3">
@@ -594,117 +307,48 @@ export function MegaMenu() {
         )}
       >
         <div className="flex flex-col gap-8 pb-10">
-          {/* Mobile Home Links */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Home</h3>
-            <div className="grid grid-cols-1 gap-3">
-              {homeLinks.map((link, index) => {
-                const Icon = link.icon;
-                const sectionId = link.href.replace('/#', '');
-                return (
-                  <a
-                    key={index}
-                    href={link.href}
-                    onClick={(e) => handleSectionClick(e, sectionId)}
-                    className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                  >
-                    <div className={cn("w-8 h-8 rounded-md bg-gradient-to-br flex items-center justify-center", link.color)}>
-                      <Icon className="w-4 h-4 text-background" />
-                    </div>
-                    <span className="font-medium text-lg">{link.title}</span>
-                  </a>
-                );
-              })}
-            </div>
-          </div>
+          {megaMenuSections.map((section) => (
+            <div key={section.id} className="space-y-4">
+              <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">
+                {section.trigger}
+              </h3>
+              <div className="grid grid-cols-1 gap-3">
+                {section.links.flatMap((group) => group.links).map((link, index) => {
+                  const Icon = link.icon;
+                  const isHomeSection = section.id === "home";
+                  const sectionId = link.href.replace("/#", "");
 
-          {/* Mobile We Links */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">We</h3>
-            <div className="grid grid-cols-1 gap-3">
-              {weLinks.map((link, index) => {
-                const Icon = link.icon;
-                return (
-                  <Link
-                    key={index}
-                    href={link.href}
-                    className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                  >
-                    <div className={cn("w-8 h-8 rounded-md bg-gradient-to-br flex items-center justify-center", link.color)}>
-                      <Icon className="w-4 h-4 text-background" />
-                    </div>
-                    <span className="font-medium text-lg">{link.title}</span>
-                  </Link>
-                );
-              })}
+                  return (
+                    <Link
+                      key={index}
+                      href={link.href}
+                      onClick={
+                        isHomeSection && link.href.startsWith("/#")
+                          ? (e) => handleSectionClick(e, sectionId)
+                          : undefined
+                      }
+                      className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
+                    >
+                      <div
+                        className={cn(
+                          "w-8 h-8 rounded-md bg-gradient-to-br flex items-center justify-center",
+                          link.color
+                        )}
+                      >
+                        <Icon className="w-4 h-4 text-background" />
+                      </div>
+                      <span className="font-medium text-lg">{link.title}</span>
+                      {link.badge && (
+                        <span className="ml-auto text-xs px-2 py-1 rounded-full bg-primary/20 text-primary">
+                          {link.badge.text}
+                        </span>
+                      )}
+                    </Link>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-
-          {/* Mobile Create Links */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Create</h3>
-            <div className="grid grid-cols-1 gap-3">
-              {createLinks.map((link, index) => {
-                const Icon = link.icon;
-                return (
-                  <Link
-                    key={index}
-                    href={link.href}
-                    className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                  >
-                    <div className={cn("w-8 h-8 rounded-md bg-gradient-to-br flex items-center justify-center", link.color)}>
-                      <Icon className="w-4 h-4 text-background" />
-                    </div>
-                    <span className="font-medium text-lg">{link.title}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Mobile Impact Links */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Impact</h3>
-            <div className="grid grid-cols-1 gap-3">
-              {impactLinks.map((link, index) => {
-                const Icon = link.icon;
-                return (
-                  <Link
-                    key={index}
-                    href={link.href}
-                    className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                  >
-                    <div className={cn("w-8 h-8 rounded-md bg-gradient-to-br flex items-center justify-center", link.color)}>
-                      <Icon className="w-4 h-4 text-background" />
-                    </div>
-                    <span className="font-medium text-lg">{link.title}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Mobile Together Links */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider">Together</h3>
-            <div className="grid grid-cols-1 gap-3">
-              {togetherLinks.map((link, index) => {
-                const Icon = link.icon;
-                return (
-                  <Link
-                    key={index}
-                    href={link.href}
-                    className="flex items-center gap-4 p-3 rounded-lg hover:bg-white/5 transition-colors"
-                  >
-                    <div className={cn("w-8 h-8 rounded-md bg-gradient-to-br flex items-center justify-center", link.color)}>
-                      <Icon className="w-4 h-4 text-background" />
-                    </div>
-                    <span className="font-medium text-lg">{link.title}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
+          ))}
 
           {/* Mobile CTA */}
           <div className="pt-6 border-t border-border/50 flex flex-col gap-3">

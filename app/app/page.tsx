@@ -22,9 +22,10 @@ export default function Home() {
       <section id="packages" className="section-padding bg-background">
         <div className="container-custom">
           <SectionHeading
-            eyebrow="Signature Partnerships"
-            title="Choose Your"
-            titleAccent="Path"
+            eyebrow="Choose Your"
+            title="Signature"
+            titleAccent="Partnerships"
+            description="Choose your commitment level: Pay monthly for flexibility, 6 months for 5% savings, or yearly for maximum value with 10% off."
             align="center"
             className="mb-8"
           />

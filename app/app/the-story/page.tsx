@@ -24,8 +24,8 @@ const copy = [
   "Ingrid, a lifelong collaborator and strategist with over 30 years of shared creative and global cultural fluency.",
   "Brenden Wing, a technologist and systems architect whose work in AI and software enables modern, scalable solutions.",
   "Marklen, an award winning creative director and producer whose visual storytelling spans decades.",
-  "Jill, a brand and strategy partner whose relationship with Heather began in the 1990s.",
-  "Lindsay Staloff, a production and location expert known for shaping high-impact commercial and film environments since the late 1990s.",
+  "Jill, a brand and strategy partner whose relationship with Heather began in the early 1990s.",
+  "Lindsay Staloff, a production and location expert known for shaping high-impact commercial and film environments since the early 2000s.",
   "Together, this founding team formed West Levy Creative Agency — not as a traditional agency, but as a collective of specialists.",
   "We are not built on junior teams, handoffs, or templates.",
   "We are built on deep expertise, direct collaboration, and customization.",
@@ -69,13 +69,12 @@ export default function OurStoryPage() {
       </section>
 
       <section className="section-padding container-custom space-y-16">
-        {/* Chapter 1 */}
         <div className="space-y-6">
           <SectionHeading
-            eyebrow="Chapter 01"
-            title="The Genesis"
+            title="The Beginning"
             description="Born from decades of trust, complementary expertise, and shared standards."
             align="left"
+            splitTitle={true}
           />
           <div className="space-y-4 text-muted-foreground leading-relaxed max-w-4xl">
             {copy.slice(0, 4).map((paragraph, idx) => (
@@ -84,97 +83,44 @@ export default function OurStoryPage() {
           </div>
         </div>
 
-        {/* Chapter 2 */}
-        <div className="space-y-6">
+        <div className="space-y-6" id="philosophy">
           <SectionHeading
-            eyebrow="Chapter 02"
             title="Our Philosophy"
-            description="Curiosity, wonder, and rigor guide everything we build."
+            description="Connection Is the Catalyst. The Power of Collective Creativity."
             align="left"
+            splitTitle={true}
           />
           <div className="space-y-4 text-muted-foreground leading-relaxed max-w-4xl">
-            {copy.slice(4, 9).map((paragraph, idx) => (
-              <p key={idx}>{paragraph}</p>
-            ))}
+            <p>
+              We believe influence thrives in connection — between creators and audiences, brands and culture, story
+              and strategy. Every campaign we build is an ecosystem: human-centered, data-informed, and impact-driven.
+            </p>
           </div>
-        </div>
 
-        {/* The Curiosities */}
-        <div className="space-y-6">
-          <SectionHeading
-            eyebrow="Chapter 03"
-            title="The Curiosities"
-            description="Selected work that shows how strategy, storytelling, and technology come together."
-            align="center"
-          />
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              { src: "/images/case-study-hero.jpg", text: "National recognition for an industry leader through PR, executive branding, and SEO-backed press." },
-              { src: "/images/podcast-case.jpg", text: "Podcast storytelling elevated with media placements and influencer partnerships." },
-              { src: "/images/stock-urban.jpg", text: "Urban campaign visuals driving brand visibility in competitive markets." },
-              { src: "/images/stock-office.jpg", text: "Enterprise-ready narratives and content systems built for scale." },
-            ].map((item) => (
-              <div key={item.src} className="group relative overflow-hidden rounded-2xl border border-border bg-card/50 shadow-lg aspect-[4/3]">
-                <Image src={item.src} alt="Work" fill className="object-cover" />
-                <div className="absolute inset-0 flex">
-                  <div className="w-1/2 bg-background/80 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-                  <div className="w-1/2 bg-background/80 translate-x-[100%] group-hover:translate-x-0 transition-transform duration-500 ease-out" />
-                </div>
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 text-center px-6">
-                  <p className="text-sm text-muted-foreground">{item.text}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Meet the Dreamers */}
-        <div className="space-y-6 py-16">
-          <SectionHeading
-            eyebrow="Chapter 04"
-            title="Meet the Dreamers"
-            description="A collective of specialists — no handoffs, no templates."
-            align="center"
-          />
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {founders.map((person) => (
-              <div key={person.name} className="p-4 rounded-xl border border-border bg-card/50 transition duration-300 hover:border-primary/60">
-                <div className="aspect-[4/5] rounded-lg overflow-hidden bg-muted mb-3">
-                  <Image
-                    src="/team/heather-wing.jpg"
-                    alt={person.name}
-                    width={600}
-                    height={750}
-                    className="w-full h-full object-cover filter grayscale hover:grayscale-0 transition duration-500"
-                  />
-                </div>
-                <p className="text-sm font-semibold text-foreground">{person.name}</p>
-                <p className="text-xs uppercase tracking-wide text-muted-foreground">{person.role}</p>
-                <p className="text-sm text-muted-foreground mt-2">{person.blurb}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Rabbit hole CTA */}
-      <section className="py-16 bg-gradient-to-b from-background via-card to-background">
-        <div className="container-custom flex flex-col items-center text-center space-y-6">
-          <div className="relative w-56 h-56 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-primary/10 blur-2xl" />
-            <Image
-              src="/graphics/aiw/watch.png"
-              alt="Pocket Watch"
-              width={180}
-              height={180}
-              className="absolute inset-0 m-auto opacity-90"
+          <div className="space-y-6" id="standard">
+            <SectionHeading
+              title="The West Levy Standard"
+              description="Precision. Authenticity. Momentum."
+              align="left"
+              splitTitle={true}
             />
-            <div className="relative z-10 w-40 h-40 rounded-full border border-primary/50 bg-background/80 backdrop-blur flex items-center justify-center shadow-2xl">
-              <p className="text-base font-medium text-foreground px-4">
-                Ready to start your own story?
+            <div className="space-y-4 text-muted-foreground leading-relaxed max-w-4xl">
+              <p>
+                Our approach blends global PR expertise with editorial craft — merging media psychology, SEO intelligence,
+                and influencer strategy into one cohesive narrative arc. We don’t chase press. We build presence.
               </p>
             </div>
           </div>
+        </div>
+
+        </section>
+
+      {/* Rabbit hole CTA */}
+      <section className="py-16 bg-gradient-to-b from-background via-card to-background">
+        <div className="container-custom flex flex-col items-center text-center space-y-4">
+          <p className="text-base font-medium text-foreground">
+            Ready to start your own story?
+          </p>
           <Link
             href="/contact"
             className="inline-flex items-center gap-2 rounded-full px-6 py-3 bg-primary text-primary-foreground font-semibold hover:bg-primary/90 transition shadow-lg"

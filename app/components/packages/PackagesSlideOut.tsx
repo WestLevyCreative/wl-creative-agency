@@ -43,14 +43,14 @@ export const PackagesSlideOut = ({ isOpen, onClose }: PackagesSlideOutProps) => 
           {/* Content */}
           <div className="container-custom py-16 px-6">
             <div className="text-center mb-8">
-              <p className="text-sm font-semibold text-primary uppercase tracking-wider mb-2">
-                Signature Partnerships
+              <p className="text-sm font-medium uppercase tracking-wider text-muted-foreground mb-4">
+                Choose Your
               </p>
               <h2 className="font-heading text-4xl md:text-5xl font-bold">
-                Choose Your <span className="text-primary">Path</span>
+                Signature <span className="text-primary">Partnerships</span>
               </h2>
-              <p className="text-muted-foreground mt-4 max-w-2xl mx-auto">
-                Select the partnership tier that aligns with your visibility goals and budget.
+              <p className="text-muted-foreground mt-6 max-w-2xl mx-auto">
+                Choose your commitment level: Pay monthly for flexibility, 6 months for 5% savings, or yearly for maximum value with 10% off.
               </p>
             </div>
 

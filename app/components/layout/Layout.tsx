@@ -15,8 +15,12 @@ export function Layout({ children }: LayoutProps) {
   const [showTooltip, setShowTooltip] = useState(false);
   const pathname = usePathname();
 
-  // Show trigger button on all pages except home and services
-  const showTriggerButton = !['/', '/services'].includes(pathname);
+  // Hide packages trigger on home, services, and careers
+  const hidePackagesTrigger =
+    pathname === "/" ||
+    pathname.startsWith("/services") ||
+    pathname.startsWith("/careers");
+  const showTriggerButton = !hidePackagesTrigger;
 
   // Show tooltip on page load (after 2 seconds)
   useEffect(() => {

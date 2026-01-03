@@ -10,10 +10,12 @@ export interface PricingTier {
   name: string;
   tagline: string;
   monthlyPrice: number;
+  sixMonthPrice: number;
   yearlyPrice: number;
   currency: string;
   stripePriceIds: {
     monthly: string;
+    sixMonth: string;
     yearly: string;
   };
   description: string;
@@ -26,11 +28,13 @@ export const pricingTiers: PricingTier[] = [
     id: "foundation",
     name: "Foundation",
     tagline: "The Launch Experience",
-    monthlyPrice: 380, // 5% off base €400
+    monthlyPrice: 400, // Base price (no discount)
+    sixMonthPrice: 380, // 5% off base
     yearlyPrice: 4320, // 10% off base annual (€400*12 = €4800 → €4320)
     currency: "€",
     stripePriceIds: {
       monthly: "price_1Sjnj3GaFjDjLXLxCT9iEeD0",
+      sixMonth: "price_placeholder_foundation_6m",
       yearly: "price_1SjnjZGaFjDjLXLxjCOTaNk8"
     },
     description: "Entry-level visibility partnership providing foundational PR momentum for early-stage brands and creators.",
@@ -48,11 +52,13 @@ export const pricingTiers: PricingTier[] = [
     id: "ascent",
     name: "Ascent",
     tagline: "Visibility Builder",
-    monthlyPrice: 570, // 5% off base €600
+    monthlyPrice: 600, // Base price (no discount)
+    sixMonthPrice: 570, // 5% off base
     yearlyPrice: 6480, // 10% off base annual (€600*12 = €7200 → €6480)
     currency: "€",
     stripePriceIds: {
       monthly: "price_1SjoEUGaFjDjLXLxasWn3SLT",
+      sixMonth: "price_placeholder_ascent_6m",
       yearly: "price_1SjoF1GaFjDjLXLxhEqp7XRV"
     },
     description: "Visibility partnership providing enhanced PR momentum for growing brands and creators.",
@@ -70,11 +76,13 @@ export const pricingTiers: PricingTier[] = [
     id: "apex",
     name: "Apex",
     tagline: "Creative Influence Engine",
-    monthlyPrice: 760, // 5% off base €800
+    monthlyPrice: 800, // Base price (no discount)
+    sixMonthPrice: 760, // 5% off base
     yearlyPrice: 8640, // 10% off base annual (€800*12 = €9600 → €8640)
     currency: "€",
     stripePriceIds: {
       monthly: "price_1SjoFoGaFjDjLXLxUYoYJZN0",
+      sixMonth: "price_placeholder_apex_6m",
       yearly: "price_1SjoGjGaFjDjLXLxvdrKXZiz"
     },
     description: "Premium visibility partnership for brands ready to scale their influence.",
@@ -93,11 +101,13 @@ export const pricingTiers: PricingTier[] = [
     id: "legacy",
     name: "Legacy",
     tagline: "Full Creative Partnership",
-    monthlyPrice: 950, // 5% off base €1000
+    monthlyPrice: 1000, // Base price (no discount)
+    sixMonthPrice: 950, // 5% off base
     yearlyPrice: 10800, // 10% off base annual (€1000*12 = €12000 → €10800)
     currency: "€",
     stripePriceIds: {
       monthly: "price_1SjoI0GaFjDjLXLxiKDiFrk7",
+      sixMonth: "price_placeholder_legacy_6m",
       yearly: "price_1SjoIyGaFjDjLXLx6ki7O5im"
     },
     description: "Comprehensive creative partnership for brands committed to long-term visibility and influence.",

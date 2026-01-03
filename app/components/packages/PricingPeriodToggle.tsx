@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export type PricingPeriod = "monthly" | "yearly";
+export type PricingPeriod = "monthly" | "sixMonth" | "yearly";
 
 interface PricingPeriodToggleProps {
   period: PricingPeriod;
@@ -9,46 +9,61 @@ interface PricingPeriodToggleProps {
 
 export const PricingPeriodToggle = ({ period, onPeriodChange }: PricingPeriodToggleProps) => {
   return (
-    <div className="flex items-center justify-center gap-4 mb-12">
-      <div className="flex items-center gap-2">
-        <span className={cn(
-          "text-sm font-medium transition-colors",
-          period === "monthly" ? "text-foreground" : "text-muted-foreground"
-        )}>
-          Monthly
-        </span>
-        <span className="inline-flex items-center px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-          Save 5%
-        </span>
-      </div>
-
+    <div className="flex items-center justify-center gap-3 mb-12">
+      {/* Monthly Pill */}
       <button
-        onClick={() => onPeriodChange(period === "monthly" ? "yearly" : "monthly")}
+        onClick={() => onPeriodChange("monthly")}
         className={cn(
-          "relative w-14 h-7 rounded-full transition-colors duration-300",
-          period === "yearly" ? "bg-primary" : "bg-muted"
+          "relative px-6 py-3 rounded-full font-medium text-sm transition-all duration-300 border-2",
+          period === "monthly"
+            ? "bg-primary text-background border-primary shadow-lg shadow-primary/25"
+            : "bg-muted text-muted-foreground border-border hover:bg-muted/80 hover:border-primary/50"
         )}
-        aria-label="Toggle pricing period"
       >
-        <span
-          className={cn(
-            "absolute top-1 left-1 w-5 h-5 rounded-full bg-white shadow-md transition-transform duration-300",
-            period === "yearly" && "translate-x-7"
-          )}
-        />
+        Monthly
       </button>
 
-      <div className="flex items-center gap-2">
+      {/* 6 Months Pill */}
+      <button
+        onClick={() => onPeriodChange("sixMonth")}
+        className={cn(
+          "relative px-6 py-3 rounded-full font-medium text-sm transition-all duration-300 border-2",
+          period === "sixMonth"
+            ? "bg-primary text-background border-primary shadow-lg shadow-primary/25"
+            : "bg-muted text-muted-foreground border-border hover:bg-muted/80 hover:border-primary/50"
+        )}
+      >
+        <span>6 Months</span>
         <span className={cn(
-          "text-sm font-medium transition-colors",
-          period === "yearly" ? "text-foreground" : "text-muted-foreground"
+          "ml-2 px-2 py-0.5 rounded-full text-xs font-semibold",
+          period === "sixMonth"
+            ? "bg-background/20 text-background"
+            : "bg-primary/10 text-primary"
         )}>
-          Yearly
+          5%
         </span>
-        <span className="inline-flex items-center px-2 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
-          Save 10%
+      </button>
+
+      {/* Yearly Pill */}
+      <button
+        onClick={() => onPeriodChange("yearly")}
+        className={cn(
+          "relative px-6 py-3 rounded-full font-medium text-sm transition-all duration-300 border-2",
+          period === "yearly"
+            ? "bg-primary text-background border-primary shadow-lg shadow-primary/25"
+            : "bg-muted text-muted-foreground border-border hover:bg-muted/80 hover:border-primary/50"
+        )}
+      >
+        <span>Yearly</span>
+        <span className={cn(
+          "ml-2 px-2 py-0.5 rounded-full text-xs font-semibold",
+          period === "yearly"
+            ? "bg-background/20 text-background"
+            : "bg-primary/10 text-primary"
+        )}>
+          10%
         </span>
-      </div>
+      </button>
     </div>
   );
 };

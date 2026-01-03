@@ -2,7 +2,8 @@ import Link from "next/link";
 import { SectionHeading } from "@/components/SectionHeading";
 import { teamMembers } from "@/data/team";
 import { ArrowRight, Phone } from "lucide-react";
-import { StaticTeamSlider } from "@/components/home/StaticTeamSlider";
+import { ConsistentTeamSlider } from "@/components/home/ConsistentTeamSlider";
+import { transformTeamMemberToTeamMember } from "@/lib/teamData";
 
 export const metadata = {
   title: "Who We Are | West Levy Creative",
@@ -153,7 +154,13 @@ export default function WhoWeArePage() {
         </div>
 
         <div className="mt-12">
-          <StaticTeamSlider />
+          <ConsistentTeamSlider 
+            teamMembers={teamMembers.map(transformTeamMemberToTeamMember)}
+            title="OUR TEAM"
+            description="The West Levy Creative team comprises global strategists, journalists, designers, and digital innovators who unite editorial precision with creative intuition. They deliver purpose-driven visibility, high-impact storytelling, and consistent media momentum for brands shaping culture across international markets."
+            ctaText="Meet the Team"
+            ctaLink="/who-we-are"
+          />
         </div>
       </section>
     </main>

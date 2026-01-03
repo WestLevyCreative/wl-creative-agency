@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function FounderSection() {
   return (
@@ -13,10 +14,13 @@ export function FounderSection() {
           {/* Image Column */}
           <div className="relative order-1">
             <div className="aspect-[4/5] rounded-2xl overflow-hidden border border-border shadow-2xl animate-image-reveal">
-              <img
+              <Image
                 src="/images/hero-heather.jpg"
                 alt="Heather Wing"
+                width={400}
+                height={500}
                 className="w-full h-full object-cover"
+                priority
               />
             </div>
             <div className="absolute -bottom-6 -right-6 w-64 h-64 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl blur-3xl -z-10" />
@@ -50,7 +54,7 @@ export function FounderSection() {
                   rel="noopener noreferrer"
                   className="text-primary hover:underline"
                 >
-                  Top Women in PR
+                &nbsp;Top Women in PR
                 </a>{" "}
                 and a Entrepreneur-featured communications leader, West Levy Creative exists at the
                 intersection of art, analytics, and advocacy.

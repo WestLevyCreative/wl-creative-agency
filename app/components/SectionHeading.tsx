@@ -8,6 +8,7 @@ interface SectionHeadingProps {
   description?: string;
   align?: "left" | "center" | "right";
   className?: string;
+  splitTitle?: boolean;
 }
 
 export function SectionHeading({
@@ -18,6 +19,7 @@ export function SectionHeading({
   description,
   align = "left",
   className,
+  splitTitle = false,
 }: SectionHeadingProps) {
   return (
     <div
@@ -34,7 +36,22 @@ export function SectionHeading({
         </span>
       )}
       <h2 className="font-h2 text-3xl md:text-4xl lg:text-5xl font-bold leading-tight">
-        <span className="text-white">{title}</span>
+        {splitTitle ? (
+          <>
+            <span className="text-white">{title.split(' ')[0]}</span>{" "}
+            <span className="text-primary">{title.split(' ').slice(1).join(' ')}</span>
+          </>
+        ) : (
+          <>
+            <span className="text-white">{title}</span>
+            {titleAccent && (
+              <>
+                {" "}
+                <span className="text-primary">{titleAccent}</span>
+              </>
+            )}
+          </>
+        )}
       </h2>
       {subtitle && (
         <p className="mt-2 font-h3-h6 text-xl md:text-2xl font-medium text-secondary">

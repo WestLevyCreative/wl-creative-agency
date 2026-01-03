@@ -29,6 +29,30 @@ export const PackageCards = ({ period = "monthly" }: PackageCardsProps) => {
     setExpandedTiers(prev => ({ ...prev, [tierId]: !prev[tierId] }));
   };
 
+  const getPrice = (tier: typeof pricingTiers[number], period: PricingPeriod): number => {
+    switch (period) {
+      case "monthly":
+        return tier.monthlyPrice;
+      case "sixMonth":
+        return tier.sixMonthPrice;
+      case "yearly":
+        return tier.yearlyPrice;
+      default:
+        return tier.monthlyPrice;
+    }
+  };
+
+  const getPeriodLabel = (period: PricingPeriod): string => {
+    switch (period) {
+      case "monthly":
+        return "month";
+      case "sixMonth":
+        return "6 months";
+      case "yearly":
+        return "year";
+    }
+  };
+
   const handleCheckout = async (tierId: string, priceId: string) => {
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -125,9 +149,10 @@ export const PackageCards = ({ period = "monthly" }: PackageCardsProps) => {
           const isExpanded = expandedTiers[tier.id];
           const visibleFeatures = isExpanded ? tier.features : tier.features.slice(0, 4);
           const hasMoreFeatures = tier.features.length > 4;
-          const price = period === "monthly" ? tier.monthlyPrice : tier.yearlyPrice;
+          const price = getPrice(tier, period);
           const priceId = tier.stripePriceIds[period];
           const isLoading = checkoutLoading === tier.id;
+          const isSixMonthPlaceholder = period === "sixMonth" && priceId.includes("placeholder");
 
           return (
             <div key={tier.id} className={cn("rounded-lg border overflow-hidden flex flex-col", tier.highlighted ? "border-primary bg-card" : "border-border bg-card/50")}>
@@ -136,11 +161,15 @@ export const PackageCards = ({ period = "monthly" }: PackageCardsProps) => {
                 <p className="text-secondary text-sm mt-1">{tier.tagline}</p>
                 <div className="mt-4">
                   <span className="text-4xl font-bold text-foreground">{tier.currency}{price.toLocaleString()}</span>
-                  <span className="text-muted-foreground">/{period === "monthly" ? "month" : "year"}</span>
+                  <span className="text-muted-foreground">/{getPeriodLabel(period)}</span>
                 </div>
-                {period === "yearly" && (
+                {period !== "monthly" && (
                   <p className="text-xs text-muted-foreground mt-1">
-                    ~{tier.currency}{Math.round(tier.yearlyPrice / 12).toLocaleString()}/month
+                    ~{tier.currency}{Math.round(
+                      period === "sixMonth"
+                        ? tier.sixMonthPrice / 6
+                        : tier.yearlyPrice / 12
+                    ).toLocaleString()}/month
                   </p>
                 )}
                 <p className="text-sm text-muted-foreground mt-4">{tier.description}</p>
@@ -178,10 +207,12 @@ export const PackageCards = ({ period = "monthly" }: PackageCardsProps) => {
               <div className="bg-[#7dd3c0] p-6 mt-auto">
                 <Button
                   onClick={() => handleCheckout(tier.id, priceId)}
-                  disabled={isLoading}
+                  disabled={isLoading || isSixMonthPlaceholder}
                   className="w-full bg-black text-white hover:bg-black/90 font-semibold text-base h-12"
                 >
-                  {isLoading ? (
+                  {isSixMonthPlaceholder ? (
+                    "Coming Soon"
+                  ) : isLoading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                       Processing...
